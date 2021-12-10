@@ -1,0 +1,26 @@
+---
+- name: "Installing Terraform in EC2" 
+  hosts: local
+  #connection: local
+  become: yes
+  remote_user: azure
+  become_method: sudo
+
+  tasks:
+  - name: Install apache2
+    apt:
+      name: apache2
+      state: latest
+
+  - name: apt Install Packages
+    apt: name={{item}} state=latest
+    with_items:
+     - wget
+     - unzip
+
+  - name: terraform install
+    unarchive:
+      src: https://releases.hashicorp.com/terraform/1.0.11/terraform_1.0.11_linux_amd64.zip
+      dest: /usr/bin
+      remote_src: True
+
